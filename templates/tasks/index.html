@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Задачи</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet"> <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.css'>
+    <link rel="stylesheet" href="{% static 'css/tasks/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tasks/style2.css' %}">
+    <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
+</head>
+<body>
+<a href="/accounts/logout"><button style="width: 100px;height 30px;margin-left:40px;">Выход</button></a>
+<!-- partial:index.partial.html -->
+<div class="p-5">
+  <h2 class="mb-4">Full Calendar</h2>
+  <div class="card">
+    <div class="card-body p-0">
+      <div id="calendar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- calendar modal -->
+<div id="modal-view-event" class="modal modal-top fade calendar-modal">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-body">
+					<h4 class="modal-title"><span class="event-icon"></span><span class="event-title"></span></h4>
+					<div class="event-body"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div id="modal-view-event-add" class="modal modal-top fade calendar-modal">
+  <div class="modal-dialog  modal-dialog-centered">
+    <div class="modal-content">
+      <form method="post" id="add-event">
+          {% csrf_token %}
+        <div class="modal-body">
+        <h4>Add Event Detail</h4>
+          <div class="form-group">
+            <label>Event name</label>
+            <input type="text" class="form-control" name="ename">
+          </div>
+          <div class="form-group">
+            <label>Event Date</label>
+            <input type='text' class="datetimepicker form-control" name="edate">
+          </div>
+          <div class="form-group">
+            <label>Event Description</label>
+            <textarea class="form-control" name="edesc"></textarea>
+          </div>
+      </div>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" >Save</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="tasks_list">
+  {% for c in tasks_list %}
+        <div class="task_item" v-on:click="edit_task">
+          <p>Индификатор: {{c.id}}</p>
+          <p>Название: {{c.task_name}}</p>
+          <p>Описание: {{c.task_text}}</p>
+          <p>Статус: {{c.task_status}}</p>
+          <hr>
+        </div>
+    {% endfor %}
+</div>
+
+<div id="menu">
+    <div class="menu">
+      <div class="menu_item" v-on:click="search_task"><button>Найти задачу</button></div>
+      <div class="menu_item" v-on:click="add_task"><button>Добавить задачу</button></div>
+      <div class="menu_item" v-on:click="edit_task"><button>Отредактировать задачу</button></div>
+      <div class="menu_item" v-on:click="delete_task"><button>Завершить задачу</button></div>
+      <div class="menu_item" v-on:click="restart_task"><button>Начать задачу занаво</button></div>
+    </div>
+</div>
+<div id="output">
+    <div v-if="add == true"><add-task></add-task></div>
+    <div v-if="edit == true"><edit-task></edit-task></div>
+    <div v-if="search == true"><search-task></search-task></div>
+    <div v-if="exit == true"><delete-task></delete-task></div>
+    <div v-if="restart == true"><restart-task></restart-task></div>
+</div>
+
+<!-- partial -->
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.js'>
+
+</script><script  src="{% static 'js/tasks/script.js' %}"></script>
+<script type="text/javascript">
+
+// HTML add-task
+Vue.component('add-task', {
+  data: function () {
+    return {}
+  },
+  template:
+    `<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="add-task">
+    <input type="text" class="form-control" name="ename" required placeholder="Название задачи">
+    <input type="text" class="form-control" name="edesc" required placeholder="Описание задачи">
+    <input type="text" class="datetimepicker form-control" name="edate" required placeholder="Дата задачи">
+    <button type="submit" class="btn btn-primary" >Отправить</button>
+    </form>`
+})
+
+Vue.component('search-task', {
+  data: function () {
+    return {}
+  },
+  template:
+    `<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="search-task">
+    <input type="text" class="form-control" name="eid" required placeholder="Индификатор задачи">
+    <button type="submit" class="btn btn-primary" >Найти</button>
+    </form>`
+})
+
+Vue.component('delete-task', {
+  data: function () {
+    return {}
+  },
+  template:
+    `<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="delete-task">
+    <input type="text" class="form-control" name="eid" required placeholder="Индификатор задачи">
+    <button type="submit" class="btn btn-primary" >Завершить</button>
+    </form>`
+})
+
+Vue.component('restart-task', {
+  data: function () {
+    return {}
+  },
+  template:
+    `<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="restart-task">
+    <input type="text" class="form-control" name="eid" required placeholder="Индификатор задачи">
+    <button type="submit" class="btn btn-primary" >Начать занаво</button>
+    </form>`
+})
+
+Vue.component('edit-task', {
+  data: function () {
+    return {}
+  },
+  template:
+    `<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="edit-task">
+    <input type="text" class="form-control" name="eid" required placeholder="Индификатор задачи">
+    <input type="text" class="form-control" name="ename" required placeholder="Название задачи">
+    <input type="text" class="form-control" name="edesc" required placeholder="Описание задачи">
+    <input type="text" class="datetimepicker form-control" name="edate" required placeholder="Дата задачи">
+    <button type="submit" class="btn btn-primary" >Изменить</button>
+    </form>`
+})
+
+out = new Vue({
+  el: '#output',
+  data: {
+    add: false,
+    edit: false,
+    search: false,
+    exit: false,
+    restart: false,
+  },
+})
+
+menu = new Vue({
+  el: '#menu',
+  data: {
+    content : "hf",
+    },
+  methods:{
+    search_task(){
+      out.edit = false;
+      out.exit = false;
+      out.add = false;
+      out.restart = false;
+      out.search = true;
+    },
+    add_task(){
+      out.edit = false;
+      out.exit = false;
+      out.search = false;
+      out.restart = false;
+      out.add = true;
+    },
+    edit_task(){
+      out.search = false;
+      out.exit = false;
+      out.add = false;
+      out.restart = false;
+      out.edit = true;
+    },
+    delete_task(){
+      out.search = false;
+      out.edit = false;
+      out.add = false;
+      out.restart = false;
+      out.exit = true;
+    },
+    restart_task(){
+      out.search = false;
+      out.edit = false;
+      out.add = false;
+      out.exit = false;
+      out.restart = true;
+    }
+  }
+})
+  </script>
+
+</body>
+</html>
