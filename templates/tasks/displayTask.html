@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for c in tasks_list %}
+        <div class="task_item" v-on:click="edit_task">
+          <p>Индификатор: {{c.id}}</p>
+          <p>Название: {{c.task_name}}</p>
+          <p>Описание: {{c.task_text}}</p>
+          <p>Статус: {{c.task_status}}</p>
+          <p>Дата: {{c.start_date}} - {{c.end_date}}</p>
+          <hr>
+        </div>
+    {% endfor %}
+<form method="get">
+        <button name="action" value="back">Вернуться</button>
+    </form>
+</body>
+</html>
