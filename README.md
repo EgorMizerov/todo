@@ -1,7 +1,9 @@
 # todo
 
 ## Установка
-
+```
+git clone https://github.com/EgorMizerov/todo.git
+```
 ### Windows
 1. Скачать Python
 https://www.python.org/downloads/
