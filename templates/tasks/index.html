@@ -48,15 +48,15 @@
         <h4>Add Event Detail</h4>
           <div class="form-group">
             <label>Event name</label>
-            <input type="text" class="form-control" name="ename">
+            <input type="text" class="form-control" placeholder="Название задачи" name="ename">
           </div>
           <div class="form-group">
             <label>Event Date</label>
-            <input type='text' class="datetimepicker form-control" name="edate">
+            <input type='text' class="form-control" placeholder="Дата в формате 2020-12-07" value="2020-12-07" name="edate">
           </div>
           <div class="form-group">
             <label>Event Description</label>
-            <textarea class="form-control" name="edesc"></textarea>
+            <textarea class="form-control" name="edesc" placeholder="Описание задачи"></textarea>
           </div>
       </div>
         <div class="modal-footer">
@@ -75,6 +75,7 @@
           <p>Название: {{c.task_name}}</p>
           <p>Описание: {{c.task_text}}</p>
           <p>Статус: {{c.task_status}}</p>
+          <p>Дата: {{c.start_date}} - {{c.end_date}}</p>
           <hr>
         </div>
     {% endfor %}
@@ -83,6 +84,7 @@
 <div id="menu">
     <div class="menu">
       <div class="menu_item" v-on:click="search_task"><button>Найти задачу</button></div>
+      <div class="menu_item" v-on:click="display_task"><button>Показать задачи</button></div>
       <div class="menu_item" v-on:click="add_task"><button>Добавить задачу</button></div>
       <div class="menu_item" v-on:click="edit_task"><button>Отредактировать задачу</button></div>
       <div class="menu_item" v-on:click="delete_task"><button>Завершить задачу</button></div>
@@ -95,6 +97,7 @@
     <div v-if="search == true"><search-task></search-task></div>
     <div v-if="exit == true"><delete-task></delete-task></div>
     <div v-if="restart == true"><restart-task></restart-task></div>
+    <div v-if="display == true"><display-task date={{date}}></display-task></div>
 </div>
 
 <!-- partial -->
@@ -102,12 +105,7 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
 <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.js'>
 
-</script><script  src="{% static 'js/tasks/script.js' %}"></script>
 <script type="text/javascript">
 
 // HTML add-task
@@ -121,7 +119,7 @@ Vue.component('add-task', {
     <input type="hidden" name="type" value="add-task">
     <input type="text" class="form-control" name="ename" required placeholder="Название задачи">
     <input type="text" class="form-control" name="edesc" required placeholder="Описание задачи">
-    <input type="text" class="datetimepicker form-control" name="edate" required placeholder="Дата задачи">
+    <input type="text" class="form-control" placeholder="Дата в формате 2020-12-07" value="2020-12-07" name="edate" required placeholder="Дата задачи">
     <button type="submit" class="btn btn-primary" >Отправить</button>
     </form>`
 })
@@ -135,6 +133,16 @@ Vue.component('search-task', {
     {% csrf_token %}
     <input type="hidden" name="type" value="search-task">
     <input type="text" class="form-control" name="eid" required placeholder="Индификатор задачи">
+    <button type="submit" class="btn btn-primary" >Найти</button>
+    </form>`
+})
+Vue.component('display-task', {
+  props: ['date'],
+  template:
+    `<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="type" value="display-task">
+    <input type="text" class="form-control" v-bind:value="date" name="edate" required placeholder="Укажите дату в формате 2020-12-08">
     <button type="submit" class="btn btn-primary" >Найти</button>
     </form>`
 })
@@ -189,6 +197,7 @@ out = new Vue({
     search: false,
     exit: false,
     restart: false,
+    display: false,
   },
 })
 
@@ -198,8 +207,17 @@ menu = new Vue({
     content : "hf",
     },
   methods:{
+    display_task(){
+      out.edit = false;
+      out.exit = false;
+      out.add = false;
+      out.restart = false;
+      out.search = false;
+      out.display = true;
+    },
     search_task(){
       out.edit = false;
+      out.display = false;
       out.exit = false;
       out.add = false;
       out.restart = false;
@@ -207,12 +225,14 @@ menu = new Vue({
     },
     add_task(){
       out.edit = false;
+      out.display = false;
       out.exit = false;
       out.search = false;
       out.restart = false;
       out.add = true;
     },
     edit_task(){
+      out.display = false;
       out.search = false;
       out.exit = false;
       out.add = false;
@@ -220,6 +240,7 @@ menu = new Vue({
       out.edit = true;
     },
     delete_task(){
+      out.display = false;
       out.search = false;
       out.edit = false;
       out.add = false;
@@ -227,6 +248,7 @@ menu = new Vue({
       out.exit = true;
     },
     restart_task(){
+      out.display = false;
       out.search = false;
       out.edit = false;
       out.add = false;
@@ -236,6 +258,10 @@ menu = new Vue({
   }
 })
   </script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js'></script>
+</script><script  src="{% static 'js/tasks/script.js' %}"></script>
 
 </body>
 </html>

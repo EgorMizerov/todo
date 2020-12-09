@@ -1,3 +1,33 @@
+let urll = "/static/js/tasks/events.json";
+let url = "https://jsonplaceholder.typicode.com/users";
+
+var request = new XMLHttpRequest();
+request.open('GET', urll);
+request.responseType = 'json';
+request.send();
+
+request.onload = function() {
+  var superHeroes = request.response;
+  populateHeader(superHeroes);
+  showHeroes(superHeroes);
+}
+
+eventss = [
+    {
+	    "title": "Barber",
+		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.",
+		"start": "2020-12-05",
+		"end": "2020-12-05",
+	},
+	{
+	    "title": "Barber",
+		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.",
+		"start": "2020-12-05",
+		"end": "2020-12-05",
+	}
+]
+console.log(eventss);
+
 jQuery(document).ready(function(){
   jQuery('.datetimepicker').datepicker({
       timepicker: true,
@@ -7,7 +37,7 @@ jQuery(document).ready(function(){
 		  multipleDatesSeparator: " - "
     });
   jQuery("#add-event").submit(function(){
-      alert("Подтвердите");
+      alert("Submitted");
       var values = {};
       $.each($('#add-event').serializeArray(), function(i, field) {
           values[field.name] = field.value;
@@ -38,108 +68,7 @@ jQuery(document).ready(function(){
 				center: 'month,agendaWeek,agendaDay',
 				right: 'today prev,next'
 			},
-			events: [
-				{
-					title: 'Barber',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-05-05',
-					end: '2020-05-05',
-					className: 'fc-bg-default',
-					icon : "circle"
-				},
-				{
-					title: 'Flight Paris',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-08-08T14:00:00',
-					end: '2020-08-08T20:00:00',
-					className: 'fc-bg-deepskyblue',
-					icon : "cog",
-					allDay: false
-				},
-				{
-					title: 'Team Meeting',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-07-10T13:00:00',
-					end: '2020-07-10T16:00:00',
-					className: 'fc-bg-pinkred',
-					icon : "group",
-					allDay: false
-				},
-				{
-					title: 'Meeting',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-08-12',
-					className: 'fc-bg-lightgreen',
-					icon : "suitcase"
-				},
-				{
-					title: 'Conference',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-08-13',
-					end: '2020-08-15',
-					className: 'fc-bg-blue',
-					icon : "calendar"
-				},
-				{
-					title: 'Baby Shower',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-08-13',
-					end: '2020-08-14',
-					className: 'fc-bg-default',
-					icon : "child"
-				},
-				{
-					title: 'Birthday',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-09-13',
-					end: '2020-09-14',
-					className: 'fc-bg-default',
-					icon : "birthday-cake"
-				},
-				{
-					title: 'Restaurant',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-10-15T09:30:00',
-					end: '2020-10-15T11:45:00',
-					className: 'fc-bg-default',
-					icon : "glass",
-					allDay: false
-				},
-				{
-					title: 'Dinner',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-11-15T20:00:00',
-					end: '2020-11-15T22:30:00',
-					className: 'fc-bg-default',
-					icon : "cutlery",
-					allDay: false
-				},
-				{
-					title: 'Shooting',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-08-25',
-					end: '2020-08-25',
-					className: 'fc-bg-blue',
-					icon : "camera"
-				},
-				{
-					title: 'Go Space :)',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-12-27',
-					end: '2020-12-27',
-					className: 'fc-bg-default',
-					icon : "rocket"
-				},
-				{
-					title: 'Dentist',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
-					start: '2020-12-29T11:30:00',
-					end: '2020-12-29T012:30:00',
-					className: 'fc-bg-blue',
-					icon : "medkit",
-					allDay: false
-				}
-			],
+			events: request.response,
 			eventRender: function(event, element) {
 				if(event.icon){
 					element.find(".fc-title").prepend("<i class='fa fa-"+event.icon+"'></i>");
