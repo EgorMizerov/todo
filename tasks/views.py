@@ -97,7 +97,7 @@ def index(request):
         if request.POST.get("type") == "display-task":
             task_id = request.POST.get("eid")
             try:
-                task = Task.objects.filter(start_date=str(start_date))
+                task = Task.objects.filter(start_date=str(task_date))
             except:
                 raise Http404("Задачи не найдена")
             return render(request, 'tasks/displayTask.html', {'tasks_list': task, "date": start_date})
