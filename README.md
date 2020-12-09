@@ -84,7 +84,7 @@ todo
   manage.py
 ```
 ## URL навигация
-/ - Главная старницы
-/accounts/login - Окно входа
-/accounts/logout - Окно выхода
-/tasks/ - Личный календарь
+<p>/ - Главная старницы</p>
+<p>/accounts/login - Окно входа</p>
+<p>/accounts/logout - Окно выхода</p>
+<p>/tasks/ - Личный календарь</p>
