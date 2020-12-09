@@ -69,3 +69,22 @@ sudo apt-get install postgresql postgresql-contrib
 ```
   python manage.py runserver
 ```
+Структура проекта
+-----------------
+```
+todo
+  accounts - Приложение accounts
+  tasks - Приложение tasks
+  templates - HTML шаблоны
+  static - Статические файлы
+    css - CSS файлы
+    js - JS файлы
+    img - JPEG/SVG/PNG файлы
+  toDoList - Основное приложение
+  manage.py
+```
+## URL навигация
+/ - Главная старницы
+/accounts/login - Окно входа
+/accounts/logout - Окно выхода
+/tasks/ - Личный календарь
