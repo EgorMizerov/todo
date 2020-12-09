@@ -63,12 +63,12 @@ sudo apt-get install postgresql postgresql-contrib
 ```
 4. Установить миграцию и создать суперпользователя
 ```
-  python manage.py migrate
-  python manage.py createsuperuser
+  python3 manage.py migrate
+  python3 manage.py createsuperuser
 ```
 5. Запуск проекта
 ```
-  python manage.py runserver
+  python3 manage.py runserver
 ```
 Структура проекта
 -----------------
