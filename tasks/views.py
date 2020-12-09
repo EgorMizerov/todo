@@ -37,7 +37,7 @@ def index(request):
             except:
                 pass
 
-            with open(filename, 'r') as f:
+            with open(filename, encoding='utf-8') as f:
                 taskslistJSON = json.load(f)
                 print(taskslistJSON)
                 jsonstartdate = dt.strftime("%Y-%m-%d")
