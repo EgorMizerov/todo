@@ -51,6 +51,7 @@ sudo apt-get install postgresql postgresql-contrib
   ```
 3. Настройка базы данных
   ```
+  sudo -i -u postgres
   psql postgres
   
   create user usertest with password 'Pass123';
