@@ -5,8 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+{% if tasks_list %}
 {% for c in tasks_list %}
-        <div class="task_item" v-on:click="edit_task">
+        <div class="task_item">
           <p>Индификатор: {{c.id}}</p>
           <p>Название: {{c.task_name}}</p>
           <p>Описание: {{c.task_text}}</p>
@@ -14,7 +15,10 @@
           <p>Дата: {{c.start_date}} - {{c.end_date}}</p>
           <hr>
         </div>
-    {% endfor %}
+{% endfor %}
+{% else %}
+<p>На это число нет задач</p>
+{% endif %}
 <form method="get">
         <button name="action" value="back">Вернуться</button>
     </form>
