@@ -36,6 +36,7 @@ https://postgrespro.ru/windows
   python manage.py runserver
 ```
 
+
 ### Linux(Debian-подобные)
 1. Скачать PostgreSQL
 ```
