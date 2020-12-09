@@ -48,7 +48,7 @@ def index(request):
                                "end": task_date
                                }
                 taskslistJSON.append(newtaskjson)
-                os.remove(filename)
+            os.remove(filename)
             with open(filename, 'w') as f:
                 json.dump(taskslistJSON, f)
 
