@@ -13,7 +13,11 @@
     <script src='https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js'></script>
 </head>
 <body>
-<a href="/accounts/logout"><button style="width: 100px;height 30px;margin-left:40px;">Выход</button></a>
+<div class="topbar" style="display:flex;justify-content:space-between">
+    <a href="/accounts/logout"><button style="width: 100px;height 30px;margin-left:40px;">Выход</button></a>
+    <a href="/tasks/"><button style="width: 100px;height 30px;margin-right:40px;">Обновить</button></a>
+</div>
+
 <!-- partial:index.partial.html -->
 <div class="p-5">
   <h2 class="mb-4">Full Calendar</h2>
