@@ -13,7 +13,7 @@ def index(request):
     user = request.user
     filename = str(BASE_DIR) + '/static/js/tasks/events.json'
     dt = datetime.now()
-    start_date = dt.strftime("%Y-%m-%d")
+    start_date = datetime.now().strftime("%Y-%m-%d")
 
     # Если пользователь не аутентифицирован
     if user.username == "":
@@ -28,7 +28,7 @@ def index(request):
         # Добавить задачу
         if request.POST.get("type") == "add-task":
             task_status = "выполянется"
-            start_date = dt.strftime("%Y-%m-%d")
+            
             # Ошибка какая-то ;(
             try:
                 newTask = Task.objects.create(user_name=user, task_name=task_name, task_text=task_text, task_status=task_status,
